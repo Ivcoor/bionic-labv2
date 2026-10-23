@@ -137,5 +137,13 @@ Introducing an independent movement timer made the position commands more gradua
 - Document the complete bionic finger prototype.
 
 ---
+docs:
+
+Images 
+<img width="2048" height="1536" alt="semana01-montaje" src="https://github.com/user-attachments/assets/c108be19-2a76-4bc2-a028-b3f5abb40429" />
+Videos
+https://github.com/user-attachments/assets/dac12f72-21cc-4cf6-97a8-da3ba1aab7a9
+
+
 
 *This project is part of a longer-term learning roadmap in embedded systems, physical AI and bionics.*
