@@ -2,7 +2,7 @@ import serial
 import csv
 import time
 
-puerto = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
+puerto = serial.Serial("/dev/ttyACM0", 9600, timeout=0)
 
 with open("datos_potenciometro.csv", "w", newline= "") as archivo:
     writer = csv.writer(archivo)
