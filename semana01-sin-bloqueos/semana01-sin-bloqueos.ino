@@ -3,12 +3,15 @@ Servo miServo;
 unsigned long ultimaLecturaMs{0}; 
 constexpr uint8_t pinPotenciometro{A0};
 constexpr unsigned long periodoLecturaMs{10};
-constexpr unsigned long periodoMovimiento{20};
+constexpr unsigned long periodoMovimiento{50};
 constexpr unsigned long periodoLed(500);
+constexpr unsigned long periodoSerialMs{50};
 constexpr uint8_t pinServo{9};
-constexpr int umbralLectura{5};
-long ultimoValorPotenciometro{0};  
+constexpr int umbralCierre{600};
+constexpr int umbralApertura{400};
 int anguloActual{45};
+int ultimoValorADC{0};
+unsigned long ultimaImpresionMs{0};
 unsigned long ultimoMovimiento{0};
 unsigned long ultimoEncendido{0};
 bool estadoLed = false;
@@ -33,17 +36,16 @@ void loop(){
     
     //Actualizamos el tiempo de la ultimaLecturaMS
     ultimaLecturaMs += periodoLecturaMs;
-    long valorPotenciometro{analogRead(pinPotenciometro)};
-  
-
+    int valorPotenciometro{analogRead(pinPotenciometro)};
+    ultimoValorADC = valorPotenciometro;
     
     if (estadoActualDedo == EstadoDedo::ABIERTO &&
-        valorPotenciometro > 600) {
+        valorPotenciometro > umbralCierre) {
         estadoActualDedo = EstadoDedo::CERRADO;
     }
 
     else if (estadoActualDedo == EstadoDedo::CERRADO &&
-         valorPotenciometro < 400) {
+         valorPotenciometro < umbralApertura) {
           estadoActualDedo = EstadoDedo::ABIERTO;
       
     }   
@@ -63,10 +65,10 @@ void loop(){
     }
 
      if (anguloObjetivo > anguloActual) {
-        anguloActual += 1;
+        anguloActual += 5;
     }
     else if (anguloObjetivo < anguloActual) {
-        anguloActual -= 1;
+        anguloActual -= 5;
     }
 
     miServo.write(anguloActual);
@@ -80,5 +82,9 @@ void loop(){
 
   }
   
+  if(ahoraMs - ultimaImpresionMs >= periodoSerialMs){
+    ultimaImpresionMs += periodoSerialMs;
+    Serial.println(ultimoValorADC);
+  }
 }
 
